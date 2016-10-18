@@ -9,6 +9,7 @@ function [vecteur_resultat] = optimisation(years, teachers, days, classes)
   beq = []; % Vecteur des valeurs des contraintes d'?galit?
   A = []; % Contraintes d'inegalite, coordonn?es de la forme promo/prof/jour/creneau
   b = []; % Vecteur des valeurs des contraintes d'in?galit?
+  s = years*teachers*days*classes; % Taille d'une contrainte
 
 % Mme Droite : prof = 1
 for i = 1:years
@@ -185,23 +186,48 @@ end
 
 %Modelisation de la formule 1 (min les trous)
 %attention X est un vecteur%
-f = zeros (1,320);
+f = zeros(s, 1);
 
-for i=1:2
-    for j=1:5
-        for k=1:8
-            f(i*j*k)=1;
-        end 
-        for k=25:32
-            f(i*j*k)=1;
-        end
+for i = 1:years
+  for j = 1:teachers
+    for k = 1:days
+      for l = [1,classes]
+        f((i-1)*(teachers*days*classes) + (j-1)*(days*classes) + (k-1)*classes + l) = 1;
+      end
     end
+  end
 end
 
-f = f';
+% Applatissement de la matrice de contraintes d'égalité
+AeqFlattened = zeros(size(Aeq, 5), s);
+for i = 1:size(Aeq, 5)
+  for j = 1:years
+    for k = 1:teachers
+      for l = 1:days
+	    for m = 1:classes
+          AeqFlattened(i, (j-1)*(teachers*days*classes) + (k-1)*(days*classes) + (l-1)*classes + m) = Aeq(j, k, l, m, i);
+	    end
+      end
+    end
+  end
+end
+
+% Applatissement de la matrice de contraintes d'inégalité
+AFlattened = zeros(size(A, 5), s);
+for i = 1:size(A, 5)
+  for j = 1:years
+    for k = 1:teachers
+      for l = 1:days
+	    for m = 1:classes
+	      AFlattened(i, (j-1)*(teachers*days*classes) + (k-1)*(days*classes) + (l-1)*classes + m) = A(j, k, l, m, i);
+	    end
+      end
+    end
+  end
+end
 
 %Obtention du vecteur resultat
-vecteur_resultat = intlinprog(f,1:320,A,b,Aeq,beq,0,1);
+vecteur_resultat = intlinprog(f, 1:s, AFlattened, b, AeqFlattened, beq, zeros(s, 1), ones(s, 1));
 
 end
 
