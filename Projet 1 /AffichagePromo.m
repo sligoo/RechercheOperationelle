@@ -1,4 +1,4 @@
-occupationCreneaux = optimisation();
+occupationCreneaux = optimisation(2,8,5,4);
 [Promo] = traductionEdt(occupationCreneaux);
 
 %PROMO 1

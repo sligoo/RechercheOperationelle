@@ -5,9 +5,9 @@
 % classes : Nombre de cr?neaux par jour
 %%
 function [vecteur_resultat] = optimisation(years, teachers, days, classes)
-  Aeq = []; % Contraintes d'?galit?, coordonn?es de la forme promo/prof/jour/cr?neau
+  Aeq = []; % Contraintes d'egalite, coordonnees de la forme promo/prof/jour/creneau
   beq = []; % Vecteur des valeurs des contraintes d'?galit?
-  A = []; % Contraintes d'in?galit?, coordonn?es de la forme promo/prof/jour/cr?neau
+  A = []; % Contraintes d'inegalite, coordonn?es de la forme promo/prof/jour/creneau
   b = []; % Vecteur des valeurs des contraintes d'in?galit?
 
 % Mme Droite : prof = 1
@@ -136,7 +136,7 @@ end
 Aeq = cat(5, Aeq, AeqRow);
 beq = [beq; 0]; % 0 cours pour les promos 1 et 2
 
-% Chaque prof ne peut donner qu'un cours par cr??neau
+% Chaque prof ne peut donner qu'un cours par creneau
 for i = 1:teachers
   for j = 1:days
     for k = 1:classes
@@ -150,7 +150,7 @@ for i = 1:teachers
   end
 end
 
-% Chaque promo ne peut suivre qu'un cours par cr??neau
+% Chaque promo ne peut suivre qu'un cours par creneau
 for i = 1:years
   for j = 1:days
     for k = 1:classes
@@ -201,7 +201,7 @@ end
 f = f';
 
 %Obtention du vecteur resultat
-vecteur_resultat = intlinprog(f,intcon,A,b,Aeq,beq,0,1);
+vecteur_resultat = intlinprog(f,1:320,A,b,Aeq,beq,0,1);
 
 end
 

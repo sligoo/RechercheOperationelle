@@ -32,11 +32,6 @@ disp('exemple 2');
 %
 disp('**********');
 %
-exemple3;
-disp('exemple 3');
-[x,F] = simplexe(OPT,c,A,b)
-%
-disp('**********');
 %
 exemple4;
 disp('exemple 4');
