@@ -3,13 +3,13 @@ occupationCreneaux = optimisation();
 
 %PROMO 1
 % x est la solution optimale
-% 5 jours par semaine et 4 créneaux par jour
-% on représente un créneau par un rectangle de 1 sur 2
+% 5 jours par semaine et 4 creneaux par jour
+% on represente un creneau par un rectangle de 1 sur 2
 % L'emploi du temps est contenu dans le rectangle ([0;0], [0,10],
 % [4,10],[4,0])
 % 
 
-%on définit la fenêtre
+%on definit la fenetre
 j=0:10;
 h=0:4;
 grid('on');
@@ -19,8 +19,8 @@ set(gca,'Xtick',0:2:10);  set(gca,'Ytick',0:1:5);
 title('EDT');
 xlabel('jour'); ylabel('heure');
 
-%On définit les créneaux sous forme de rectangle (blanc par défaut, en
-%couleur si occupé)
+%On definit les creneaux sous forme de rectangle (blanc par defaut, en
+%couleur si occup??)
 %creneau = zeros(5,4);
 for i= 1:5
   for j= 1:4

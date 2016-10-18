@@ -2,13 +2,13 @@
 % years : Nombre de promotions
 % teachers : Nombre de professeurs
 % days : Nombre de jours
-% classes : Nombre de créneaux par jour
+% classes : Nombre de cr?neaux par jour
 %%
-function optimisation(years, teachers, days, classes)
-  Aeq = []; % Contraintes d'égalité, coordonnées de la forme promo/prof/jour/créneau
-  beq = []; % Vecteur des valeurs des contraintes d'égalité
-  A = []; % Contraintes d'inégalité, coordonnées de la forme promo/prof/jour/créneau
-  b = []; % Vecteur des valeurs des contraintes d'inégalité
+function [vecteur_resultat] = optimisation(years, teachers, days, classes)
+  Aeq = []; % Contraintes d'?galit?, coordonn?es de la forme promo/prof/jour/cr?neau
+  beq = []; % Vecteur des valeurs des contraintes d'?galit?
+  A = []; % Contraintes d'in?galit?, coordonn?es de la forme promo/prof/jour/cr?neau
+  b = []; % Vecteur des valeurs des contraintes d'in?galit?
 
 % Mme Droite : prof = 1
 for i = 1:years
@@ -88,7 +88,7 @@ end
 beq = [beq; 3]; % 3 cours avec la promo 1
 beq = [beq; 3]; % 3 cours avec la promo 2
 
-% Mlle Gazelle : prof = 7, jour = 4, créneau = 3
+% Mlle Gazelle : prof = 7, jour = 4, cr??neau = 3
 for i = 1:years
   AeqRow = zeros(years, teachers, days, classes);
   AeqRow(i, 7, 4, 3) = 1;
@@ -97,7 +97,7 @@ end
 beq = [beq; 1]; % 1 cours avec la promo 1
 beq = [beq; 0]; % 0 cours avec la promo 2
 
-% M. Bigceps : prof = 8, jour = 4, créneau = 3
+% M. Bigceps : prof = 8, jour = 4, cr??neau = 3
 for i = 1:years
   AeqRow = zeros(years, teachers, days, classes);
   AeqRow(i, 8, 4, 3) = 1;
@@ -106,7 +106,7 @@ end
 beq = [beq; 0]; % 0 cours avec la promo 1
 beq = [beq; 1]; % 1 cours avec la promo 2
 
-% Créneau réservé (partiels) : jour = 1, créneau = 1
+% Cr??neau r??serv?? (partiels) : jour = 1, cr??neau = 1
 AeqRow = zeros(years, teachers, days, classes);
 for i = 1:years
   for j = 1:teachers
@@ -116,7 +116,7 @@ end
 Aeq = cat(5, Aeq, AeqRow);
 beq = [beq; 0]; % 0 cours pour les promos 1 et 2
 
-% M. Ellips indisponible le Lundi matin : prof = 2, jour = 1, créneau = 1:2
+% M. Ellips indisponible le Lundi matin : prof = 2, jour = 1, cr??neau = 1:2
 AeqRow = zeros(years, teachers, days, classes);
 for i = 1:years
   for j = 1:2
@@ -136,7 +136,7 @@ end
 Aeq = cat(5, Aeq, AeqRow);
 beq = [beq; 0]; % 0 cours pour les promos 1 et 2
 
-% Chaque prof ne peut donner qu'un cours par créneau
+% Chaque prof ne peut donner qu'un cours par cr??neau
 for i = 1:teachers
   for j = 1:days
     for k = 1:classes
@@ -145,12 +145,12 @@ for i = 1:teachers
         ARow(l, i, j, k) = 1;
       end
       A = cat(5, A, ARow);
-      b = [b; 1]; % max : 1 cours par prof/jour/créneau
+      b = [b; 1]; % max : 1 cours par prof/jour/cr??neau
     end
   end
 end
 
-% Chaque promo ne peut suivre qu'un cours par créneau
+% Chaque promo ne peut suivre qu'un cours par cr??neau
 for i = 1:years
   for j = 1:days
     for k = 1:classes
@@ -159,7 +159,7 @@ for i = 1:years
         ARow(i, l, j, k) = 1;
       end 
       A = cat(5, A, ARow);
-      b = [b; 1]; % max : 1 cours par promo/jour/créneau
+      b = [b; 1]; % max : 1 cours par promo/jour/cr??neau
     end
   end
 end
@@ -181,3 +181,27 @@ for i = 1:years
     end
   end
 end
+
+
+%Modelisation de la formule 1 (min les trous)
+%attention X est un vecteur%
+f = zeros (1,320);
+
+for i=1:2
+    for j=1:5
+        for k=1:8
+            f(i*j*k)=1;
+        end 
+        for k=25:32
+            f(i*j*k)=1;
+        end
+    end
+end
+
+f = f';
+
+%Obtention du vecteur resultat
+vecteur_resultat = intlinprog(f,intcon,A,b,Aeq,beq,0,1);
+
+end
+
