@@ -1,4 +1,7 @@
 function [revenu] = revenus(stock, demande, s, S, v, C1, C2, C3, C4)
+% Calcul du revenu pendant la periode n a n+1 si le stock a la periode n 
+% vaut stock et la demande a la periode n+1 vaut demande
+
 % On vend ce que l'on peut
 if stock > demande
     ventes = demande;
@@ -26,3 +29,4 @@ cout_commande = C3 + commande * C4;
 
 % Revenu de la semaine
 revenu = gain_ventes - cout_stockage - cout_penurie - cout_commande;
+end
