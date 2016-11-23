@@ -8,7 +8,7 @@ A = eye(S+1) - P;
 A = [A  ones(S+1, 1)];
 % B = [0, 0, 0, ... , 0, 1] (S+1 zeros)
 B = [zeroes(S+1, 1); 1];
-pistar = A \ B;
+pistar = A' \ B;
 
 end
 
